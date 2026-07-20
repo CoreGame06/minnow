@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <queue>
 #include <string>
 #include <string_view>
 
@@ -20,6 +21,13 @@ public:
 
   void set_error() { error_ = true; };       // Signal that the stream suffered an error.
   bool has_error() const { return error_; }; // Has the stream had an error?
+
+  std::queue<std::string> buffer_;
+  uint64_t amount_;       // 剩余容量
+  uint64_t total_pushed_; // 总写入量
+  uint64_t total_poped_;  // 总读入量
+  uint64_t view_offset_;  // 记录队首的 string被消耗了多少字节
+  bool close_;            // 端口状态
 
 protected:
   // Please add any additional state to the ByteStream here, and not to the Writer and Reader interfaces.
