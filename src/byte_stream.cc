@@ -1,5 +1,4 @@
 #include "byte_stream.hh"
-#include <queue>
 
 using namespace std;
 
