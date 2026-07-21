@@ -1,6 +1,7 @@
 #pragma once
 
 #include "byte_stream.hh"
+#include<map>
 
 class Reassembler
 {
@@ -42,5 +43,10 @@ public:
   const Writer& writer() const { return output_.writer(); }
 
 private:
-  ByteStream output_;
+  ByteStream output_; // 目标字节流，目前收到的index符合则直接写入
+  std::map<uint64_t,std::string> unassembled_bytes_{}; //index不符合时，暂存在这里
+  uint64_t first_unassembled_index_{0}; //下一个期待收到的index
+  bool has_last_substring_{false}; //记录是否收到了最后一个EOF
+  uint64_t last_index_{0}; //全局流的总字节数，结束索引 
+  uint64_t pending_bytes_count_{0}; //
 };
