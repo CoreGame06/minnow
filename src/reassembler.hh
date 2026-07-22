@@ -48,5 +48,10 @@ private:
   uint64_t first_unassembled_index_{0}; //下一个期待收到的index
   bool has_last_substring_{false}; //记录是否收到了最后一个EOF
   uint64_t last_index_{0}; //全局流的总字节数，结束索引 
-  uint64_t pending_bytes_count_{0}; //
+  uint64_t pending_bytes_count_{0}; // map中的函数
+
+  //几个辅助函数，模块化
+  void crop_substring(uint64_t& first_index,std::string& data);
+  void merge_overlaps(uint64_t first_index,std::string data);
+  void pop_to_stream();
 };
