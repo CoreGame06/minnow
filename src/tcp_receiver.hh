@@ -3,12 +3,13 @@
 #include "reassembler.hh"
 #include "tcp_receiver_message.hh"
 #include "tcp_sender_message.hh"
+#include<optional>
 
 class TCPReceiver
 {
 public:
   // Construct with given Reassembler
-  explicit TCPReceiver( Reassembler&& reassembler ) : reassembler_( std::move( reassembler ) ) {}
+  explicit TCPReceiver( Reassembler&& reassembler ) : reassembler_( std::move( reassembler ) ) ,isn_{}{}
 
   /*
    * The TCPReceiver receives TCPSenderMessages, inserting their payload into the Reassembler
@@ -27,4 +28,5 @@ public:
 
 private:
   Reassembler reassembler_;
+  std::optional<Wrap32> isn_; //存储isn,optional可以表示没有收到的值
 };
