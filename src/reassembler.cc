@@ -8,6 +8,12 @@ void Reassembler::crop_substring(uint64_t & first_index,std::string & data)
     // 记录当前buffer的右边界索引
   uint64_t first_unacceptable_index = writer().bytes_pushed() + writer().available_capacity();
 
+  if(first_index>=first_unacceptable_index)
+  {
+    data.clear();
+    return;
+  }
+  
   // 左边界裁切问题
   if(first_index<first_unassembled_index_)
   {
@@ -21,7 +27,8 @@ void Reassembler::crop_substring(uint64_t & first_index,std::string & data)
   }
 
   // 右边界裁切+防止超过容量
-  if(first_index +data.size()>first_unacceptable_index)
+  //这样写不容易溢出
+  if(data.size()>first_unacceptable_index-first_index) 
   {
     if(first_unacceptable_index>=first_index)
     {
