@@ -34,17 +34,17 @@ void Writer::close()
 
 bool Writer::is_closed() const
 {
-  return close_; 
+  return close_;
 }
 
 uint64_t Writer::available_capacity() const
 {
-  return capacity_ - amount_; 
+  return capacity_ - amount_;
 }
 
 uint64_t Writer::bytes_pushed() const
 {
-  return total_pushed_; 
+  return total_pushed_;
 }
 
 string_view Reader::peek() const

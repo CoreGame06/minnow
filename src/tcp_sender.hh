@@ -5,6 +5,7 @@
 #include "tcp_sender_message.hh"
 
 #include <functional>
+#include <queue>
 
 class TCPSender
 {
@@ -42,4 +43,13 @@ private:
   ByteStream input_;
   Wrap32 isn_;
   uint64_t initial_RTO_ms_;
+  uint64_t current_RTO_ms_ { initial_RTO_ms_ }; // 当前RTO，可能翻倍
+  uint64_t next_abs_seqno_ { 0 };               // 下一个的序列号
+  uint64_t ack_abs_seqno_ { 0 };                // 当前已经确认的
+  uint16_t window_size_ { 1 };
+  bool fin_sent_ { false };                              // 记录是否已经发送过了带FIN标志的报文
+  uint64_t consecutive_retransmissions_ { 0 };           // 连续超时重传次数
+  bool timer_running_ { false };                         // 定时器是否开启
+  uint64_t timer_ms_ { 0 };                              // 累积流逝的毫秒数
+  std::queue<TCPSenderMessage> outstanding_segments_ {}; // 已发送单位确认的报文队列
 };
