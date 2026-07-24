@@ -6,7 +6,8 @@
 
 #include <memory>
 #include <queue>
-
+#include <unordered_map>
+#include <vector>
 // A "network interface" that connects IP (the internet layer, or network layer)
 // with Ethernet (the network access layer, or link layer).
 
@@ -75,11 +76,23 @@ private:
   void transmit( const EthernetFrame& frame ) const { port_->transmit( *this, frame ); }
 
   // Ethernet (known as hardware, network-access-layer, or link-layer) address of the interface
-  EthernetAddress ethernet_address_;
+  EthernetAddress ethernet_address_; //自己的mac地址
 
   // IP (known as internet-layer or network-layer) address of the interface
   Address ip_address_;
 
   // Datagrams that have been received
   std::queue<InternetDatagram> datagrams_received_ {};
+
+  struct ArpEntry{
+    EthernetAddress mac;
+    size_t ttl; //剩余生存毫秒数
+  };
+
+  // ARP 缓存表 IP->(mac,剩余生存毫秒数)
+  std::unordered_map<uint32_t,ArpEntry> arp_table_{};
+  // 记录已经发出的ARP请求以及流逝的时间 IP -> time
+  std::unordered_map<uint32_t,size_t> arp_requests_lifetime_{};
+  // 等待mac地址而暂存的数据包 目标IP和对应的要传的数据
+  std::vector<std::pair<Address,InternetDatagram>> waiting_datagrams_{};
 };
