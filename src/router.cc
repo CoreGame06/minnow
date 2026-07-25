@@ -49,7 +49,7 @@ std::optional<Router::RouteEntry> Router::match_route(const uint32_t dst_ip) con
     }
   }
 
-  return best_route? std::make_optional(*best_route):std::nullopt;
+  return best_route? make_optional(*best_route):nullopt;
 
 }
 

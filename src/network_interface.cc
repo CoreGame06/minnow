@@ -107,7 +107,7 @@ void NetworkInterface::recv_frame( EthernetFrame frame )
           it++;
       }
       
-      // 别人发广播，问我的IP,则恢复 ARP Reply
+      // 别人发广播，问我的IP,则回复 ARP Reply
       if(arp_msg.opcode == ARPMessage::OPCODE_REQUEST &&
       arp_msg.target_ip_address == ip_address_.ipv4_numeric())
       {
