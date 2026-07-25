@@ -26,3 +26,6 @@ add_app(tcp_native)
 add_app(tcp_ipv4)
 add_app(endtoend)
 add_app(ip_raw)
+add_app(fun_router)
+add_app(tcp_eth_udp)
+
